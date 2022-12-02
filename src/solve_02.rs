@@ -165,7 +165,7 @@ pub(crate) fn solve_day_2_challenge_2(input_path: &Path) -> anyhow::Result<Score
 
 #[cfg(test)]
 mod tests {
-    use crate::solve_02::solve_day_2_challenge_1;
+    use crate::solve_02::{solve_day_2_challenge_1, solve_day_2_challenge_2};
     use std::path::Path;
 
     #[test]
@@ -173,6 +173,14 @@ mod tests {
         assert_eq!(
             solve_day_2_challenge_1(Path::new("data/02.txt")).unwrap(),
             12586
+        );
+    }
+
+    #[test]
+    fn test_solve_day_2_challenge_2() {
+        assert_eq!(
+            solve_day_2_challenge_2(Path::new("data/02.txt")).unwrap(),
+            13193
         );
     }
 }
