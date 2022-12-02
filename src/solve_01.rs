@@ -4,7 +4,7 @@ use std::path::Path;
 use std::str::FromStr;
 
 type Calories = u64;
-pub(crate) fn solve_calorie_counting(input_path: &Path, n: usize) -> anyhow::Result<Calories> {
+pub(crate) fn solve_day_1_challenges(input_path: &Path, n: usize) -> anyhow::Result<Calories> {
     let input_file = File::open(input_path)?;
     let buffer_reader = BufReader::new(input_file);
     let mut elves_calories: Vec<Calories> = vec![];
@@ -23,18 +23,18 @@ pub(crate) fn solve_calorie_counting(input_path: &Path, n: usize) -> anyhow::Res
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
+    use crate::solve_01::solve_day_1_challenges;
     use std::path::Path;
-    use crate::solve_01::solve_calorie_counting;
 
     #[test]
     fn test_solve_calorie_counting() {
         assert_eq!(
-            solve_calorie_counting(Path::new("data/01.txt"), 1).unwrap(),
+            solve_day_1_challenges(Path::new("data/01.txt"), 1).unwrap(),
             69310
         );
         assert_eq!(
-            solve_calorie_counting(Path::new("data/01.txt"), 3).unwrap(),
+            solve_day_1_challenges(Path::new("data/01.txt"), 3).unwrap(),
             206104
         )
     }
