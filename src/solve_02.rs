@@ -106,11 +106,11 @@ fn parse_input_file_challenge_1(input_path: &Path) -> anyhow::Result<Vec<RoundCh
         let line = line?;
         let letters: Vec<&str> = line.split(' ').collect();
         let first_letter = letters
-            .get(0)
-            .ok_or(anyhow::anyhow!("parsing error {}", line))?;
+            .first()
+            .ok_or_else(|| anyhow::anyhow!("parsing error {}", line))?;
         let second_letter = letters
             .get(1)
-            .ok_or(anyhow::anyhow!("parsing error {}", line))?;
+            .ok_or_else(|| anyhow::anyhow!("parsing error {}", line))?;
         let first: Shape = shape_from_str_hopefuly(first_letter)?;
         let second: Shape = shape_from_str_hopefuly(second_letter)?;
         rounds.push(RoundChallenge1 { first, second })
@@ -139,11 +139,11 @@ fn parse_input_file_challenge_2(input_path: &Path) -> anyhow::Result<Vec<RoundCh
         let line = line?;
         let letters: Vec<&str> = line.split(' ').collect();
         let first_letter = letters
-            .get(0)
-            .ok_or(anyhow::anyhow!("parsing error {}", line))?;
+            .first()
+            .ok_or_else(|| anyhow::anyhow!("parsing error {}", line))?;
         let second_letter = letters
             .get(1)
-            .ok_or(anyhow::anyhow!("parsing error {}", line))?;
+            .ok_or_else(|| anyhow::anyhow!("parsing error {}", line))?;
         let first: Shape = shape_from_str_hopefuly(first_letter)?;
         let second: Outcome = outcome_from_str_hopefuly(second_letter)?;
         rounds.push(RoundChallenge2 { first, second })
