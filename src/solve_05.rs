@@ -1,8 +1,7 @@
 use anyhow::{anyhow, bail};
 use log::debug;
-use nom::bytes::complete::{tag, take_until, take_while_m_n};
-use nom::character::complete::{anychar, digit1, line_ending};
-use nom::combinator::map_res;
+use nom::bytes::complete::{tag, take_until};
+use nom::character::complete::{anychar, line_ending};
 use nom::multi::{many0, many1, separated_list0};
 use nom::sequence::{delimited, terminated, tuple};
 use nom::IResult;
@@ -10,24 +9,13 @@ use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufReader, Read};
 use std::path::Path;
+use crate::parser_utils::{positive_number, single_space};
 
 #[derive(Debug, Eq, PartialEq)]
 struct Move {
     count: usize,
     from: usize,
     to: usize,
-}
-
-fn number(input: &str) -> IResult<&str, &str> {
-    digit1(input)
-}
-
-fn positive_number(input: &str) -> IResult<&str, usize> {
-    map_res(number, |out| out.parse::<usize>())(input)
-}
-
-fn single_space(input: &str) -> IResult<&str, &str> {
-    take_while_m_n(1, 1, |c: char| c == ' ')(input)
 }
 
 fn parse_move_line(input: &str) -> IResult<&str, Move> {
