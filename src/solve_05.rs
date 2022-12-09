@@ -1,3 +1,4 @@
+use crate::parser_utils::{positive_number, single_space};
 use anyhow::{anyhow, bail};
 use log::debug;
 use nom::bytes::complete::{tag, take_until};
@@ -9,7 +10,6 @@ use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufReader, Read};
 use std::path::Path;
-use crate::parser_utils::{positive_number, single_space};
 
 #[derive(Debug, Eq, PartialEq)]
 struct Move {

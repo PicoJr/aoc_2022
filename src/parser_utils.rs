@@ -14,4 +14,3 @@ pub(crate) fn positive_number(input: &str) -> IResult<&str, usize> {
 pub(crate) fn single_space(input: &str) -> IResult<&str, &str> {
     take_while_m_n(1, 1, |c: char| c == ' ')(input)
 }
-
