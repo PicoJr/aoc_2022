@@ -14,6 +14,7 @@ mod solve_09;
 mod solve_10;
 mod solve_11;
 mod solve_12;
+mod solve_14;
 
 use crate::cli::Args;
 use clap::Parser;
@@ -216,6 +217,14 @@ fn main() -> anyhow::Result<()> {
             data_path,
         } => {
             let score = solve_12::solve_day_12_challenge_2(&data_path.as_path().join("12.txt"))?;
+            println!("{:?}", score);
+        }
+        Args {
+            day: 14,
+            challenge: 1,
+            data_path,
+        } => {
+            let score = solve_14::solve_day_14_challenge_1(&data_path.as_path().join("14.txt"))?;
             println!("{:?}", score);
         }
         Args { day, challenge, .. } => {
