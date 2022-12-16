@@ -227,6 +227,14 @@ fn main() -> anyhow::Result<()> {
             let score = solve_14::solve_day_14_challenge_1(&data_path.as_path().join("14.txt"))?;
             println!("{:?}", score);
         }
+        Args {
+            day: 14,
+            challenge: 2,
+            data_path,
+        } => {
+            let score = solve_14::solve_day_14_challenge_2(&data_path.as_path().join("14.txt"))?;
+            println!("{:?}", score);
+        }
         Args { day, challenge, .. } => {
             eprintln!(
                 "no solver available for day {}, challenge {}",

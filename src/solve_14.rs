@@ -151,7 +151,7 @@ pub(crate) fn solve_day_14_challenge_1(input_path: &Path) -> anyhow::Result<Scor
         }
         // not empty diagonally left
         // check right
-        if sand.x == rock_structure.max_x - rock_structure.min_x {
+        if sand.x == rock_structure.max_x {
             outside = true;
             break;
         }
@@ -172,6 +172,92 @@ pub(crate) fn solve_day_14_challenge_1(input_path: &Path) -> anyhow::Result<Scor
     }
 
     for row in rock_structure.rocks.row_iter() {
+        debug!(
+            "{:?}",
+            row.iter()
+                .map(|x| match x {
+                    0 => '.',
+                    1 => '#',
+                    2 => 'o',
+                    _ => '?',
+                })
+                .join("")
+        );
+    }
+    Ok(score)
+}
+
+pub(crate) fn solve_day_14_challenge_2(input_path: &Path) -> anyhow::Result<Score> {
+    let rock_structure = parse_input(input_path)?;
+
+    let rows = rock_structure.rocks.nrows();
+    let cols = rock_structure.rocks.ncols();
+
+    let margin = rows + 2;
+    let mut rocks_challenge_2 = DMatrix::zeros(rows + 2, margin + cols + margin);
+    for r in 0..rock_structure.rocks.nrows() {
+        for c in 0..rock_structure.rocks.ncols() {
+            rocks_challenge_2[(r, c + margin)] = rock_structure.rocks[(r, c)];
+        }
+    }
+
+    let last_row = rocks_challenge_2.nrows() - 1;
+    for c in 0..rocks_challenge_2.ncols() {
+        rocks_challenge_2[(last_row, c)] = 1;
+    }
+
+    let mut sand: Point = Point { x: 500, y: 0 };
+    let mut score: Score = 0;
+    loop {
+        // debug!("sand: {:?}, margin {:?}", sand, margin);
+        if rocks_challenge_2[(sand.y + 1, sand.x + margin - rock_structure.min_x)] == 0 {
+            // empty, sand can move there
+            sand.y += 1;
+            continue;
+        }
+        // not empty below
+        // check left
+        if sand.x == rock_structure.min_x - margin {
+            debug!("should not happen thanks to margins");
+            break;
+        }
+        // left not outside
+        // check diagonally left
+        if rocks_challenge_2[(sand.y + 1, sand.x + margin - rock_structure.min_x - 1)] == 0 {
+            // empty, sand can move there
+            sand.y += 1;
+            sand.x -= 1;
+            continue;
+        }
+        // not empty diagonally left
+        // check right
+        if sand.x == rock_structure.max_x + margin {
+            debug!("should not happen thanks to margins");
+            break;
+        }
+        // right not outside
+        // check diagonally right
+        if rocks_challenge_2[(sand.y + 1, sand.x + margin - rock_structure.min_x + 1)] == 0 {
+            // empty, sand can move there
+            sand.y += 1;
+            sand.x += 1;
+            continue;
+        }
+        // check if we reached the top row
+        if sand.y == 0 {
+            rocks_challenge_2[(sand.y, sand.x + margin - rock_structure.min_x)] = 2;
+            score += 1;
+            break;
+        }
+
+        // could not move bottom, diagonally left or diagonally right -> rest
+        rocks_challenge_2[(sand.y, sand.x + margin - rock_structure.min_x)] = 2;
+        // debug!("resting here: {:?}", sand);
+        score += 1;
+        sand = Point { x: 500, y: 0 };
+    }
+
+    for row in rocks_challenge_2.row_iter() {
         debug!(
             "{:?}",
             row.iter()
